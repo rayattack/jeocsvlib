@@ -1,0 +1,7 @@
+{
+    "vendor": "mongodb",
+    "database": "nodishdb",
+    "port": 27017,
+    "delimiter": ",",
+    "host": "localhost"
+}
