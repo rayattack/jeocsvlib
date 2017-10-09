@@ -7,7 +7,7 @@
   "description": "Simple CSV Parsing Exercise",
   "main": "geocsvlib.js",
   "scripts": {
-    "test": "mocha *.test.js",
+    "test": "mocha ./**/*.test.js",
     "test-watch": "nodemon --exec \"npm test\""
   },
   "author": "",
@@ -27,6 +27,6 @@
   },
   "devDependencies": {
     "expect": "^1.20.1",
-    "mocha": "^4.0.1"
+    "mocha": "^3.0.0"
   }
 }

@@ -136,51 +136,93 @@ var validateData = (pipestack, callback) => {
     }
 };
 
+// try {
+//     var mongoClient = MongoClient.connect(`${vendor}://${host}:${port}/${database}`, (err, db) => {
+//         if(err){
+//             console.log('Could not connect to mongodb with configuration:', cfg);
+//         }
+//         //create index before we move along
+//         db.createIndex(collectionName, 'ip_address', {unique: true}, (err, name) => {
+//             if(err){
+//                 return console.log("Could not create an index:", err);
+//             }
+//             console.log(`Index Created with name: ${name}`);
+//         });
+//
+//         try{
+//             fs.createReadStream(csvFilePath)
+//                 .pipe(csv())
+//                 .on("data", function(data){
+//                     pushData(data, (pipestack)=>{
+//                         validateData(pipestack, (validData) => {
+//                             if(validData){
+//                                 saveData(db, validData, () => {
+//                                     console.log("Saved");
+//                                     success++;
+//                                     total++;
+//                                 });
+//                             }
+//                             fail++;
+//                             total++;
+//                         });
+//                     });
+//                 })
+//                 .on("end", function(){
+//                     db.close();
+//                     showStats();
+//             });
+//         }
+//         catch(err){
+//             console.log("That file was not found");
+//         }
+//     });
+// }
+// catch(err){
+//     console.log(`Could not connect fo ${cfg.vendor} with configuraion:`, cfg);
+// }
 
-try {
-    var mongoClient = MongoClient.connect(`${vendor}://${host}:${port}/${database}`, (err, db) => {
-        if(err){
-            console.log('Could not connect to mongodb with configuration:', cfg);
-        }
-        //create index before we move along
-        db.createIndex(collectionName, 'ip_address', {unique: true}, (err, name) => {
-            if(err){
-                return console.log("Could not create an index:", err);
-            }
-            console.log(`Index Created with name: ${name}`);
-        });
 
-        try{
-            fs.createReadStream(csvFilePath)
-                .pipe(csv())
-                .on("data", function(data){
-                    pushData(data, (pipestack)=>{
-                        validateData(pipestack, (validData) => {
-                            if(validData){
-                                saveData(db, validData, () => {
-                                    console.log("Saved");
-                                    success++;
-                                    total++;
-                                });
-                            }
-                            fail++;
-                            total++;
-                        });
-                    });
-                })
-                .on("end", function(){
-                    db.close();
-                    showStats();
+parseCSV = (csvFileName) => {
+    mongoid.getDbConnection((db) => {
+        if(db){
+            //Aye me laddies, need to set unique constraints fer duplicates prevention
+            db.createIndex(collectionName, 'ip_address', {unique: true}, (err, name) => {
+                if(err){ return console.log("Could not create an index:", err);}
+                console.log(`Index Created with name: ${name}`);
             });
-        }
-        catch(err){
-            console.log("That file was not found");
+
+            try{
+                fs.createReadStream(csvFilePath)
+                    .pipe(csv())
+                    .on("data", function(data){
+                        pushData(data, (pipestack)=>{
+                            validateData(pipestack, (validData) => {
+                                if(validData){
+                                    saveData(db, validData, () => {
+                                        console.log("Saved");
+                                        success++;
+                                        total++;
+                                    });
+                                }
+                                fail++;
+                                total++;
+                            });
+                        });
+                    })
+                    .on("end", function(){
+                        db.close();
+                        showStats();
+                });
+            }
+            catch(err){
+                console.log("That file was not found");
+            }//catch
+        }//if(db)
+        else {
+            //do something else
         }
     });
-}
-catch(err){
-    console.log(`Could not connect fo ${cfg.vendor} with configuraion:`, cfg);
-}
+};
 
 //resolve with callback
 var find = (ipAddress, callback) => {
@@ -214,6 +256,12 @@ var finding = (ipAddress, callback) => {
     });
 };
 
+if(csvFilePath){
+    parseCSV(csvFilePath);
+}
+else {
+    console.log('NOTHING DEY HAPPEN? NOTHING DE PAR...');
+}
 
 module.exports = {
     getTime,
