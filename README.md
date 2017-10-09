@@ -3,7 +3,7 @@ JeoCSVLib NodeJS
 
 [![Build Status](https://travis-ci.org/rayattack/jeocsvlib.svg?branch=dev)](https://travis-ci.org/rayattack/jeocsvlib)
 
-GeoCSVLIB implemented in NodeJS Version available on pip with a frontend built in express.
+GeoCSVLIB implemented in NodeJS Version available on NPM with a frontend built in express.
 
 ## Installation
 
