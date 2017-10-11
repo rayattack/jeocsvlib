@@ -1,22 +1,30 @@
 {
-  "name": "geocsvlib",
+  "name": "jeocsvlib",
+  "preferGlobal": true,
   "bin": {
-    "geocsvlib": "bin/geocsvlib.js"
+      "jeocsvlib": "./jeocsvlib.js"
   },
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Simple CSV Parsing Exercise",
-  "main": "geocsvlib.js",
-  "scripts": {
-    "test": "mocha ./**/*.test.js",
-    "test-watch": "nodemon --exec \"npm test\""
+  "main": "jeocsvlib.js",
+  "directories": {
+    "test": "tests"
   },
-  "author": "",
+  "scripts": {
+    "test": "mocha **/**.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rayattack/jeocsvlib.git"
+  },
+  "author": "RT",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rayattack/jeocsvlib/issues"
+  },
+  "homepage": "https://github.com/rayattack/jeocsvlib#readme",
   "dependencies": {
-    "async": "^2.5.0",
-    "csv": "^1.1.1",
     "csv-parser": "^1.11.0",
-    "csv-stream": "^0.1.3",
     "eslint": "^4.8.0",
     "mongodb": "^2.2.31",
     "mongoose": "^4.5.9",
